@@ -1,0 +1,20 @@
+import pulp
+
+prob = pulp.LpProblem('Lucro', pulp.LpMaximize)
+
+x1 = pulp.LpVariable('Chocolate', lowBound = 0, cat = 'Integer')
+x2 = pulp.LpVariable('Morango', lowBound = 0, cat = 'Integer')
+
+Lucro = x1*4 + x2*2
+prob += Lucro
+
+ovos = x1*4 + x2*1
+prob += (ovos <=30)
+
+tempo = x1*1/3 + x2*2/3
+prob += (tempo <= 8)
+
+optimization_result = prob.solve()
+
+print('Chocolate = ', x1.value())
+print('Morango = ', x2.value())
