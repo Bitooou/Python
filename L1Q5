@@ -1,0 +1,62 @@
+import pulp
+
+#max Lucro=200*x1+300*x2
+#s.a: x1+x2<=45 (área)
+#     3*x1+2*x2<=100 (empregados)
+#     2*x1+4*x2<=120 (fertilizantes)
+# x1= quantidade de milho, x2= quantidade de feijão
+
+
+# Definindo o problema como de maximização
+prob = pulp.LpProblem('Problema Industria SideVR Emissao', pulp.LpMinimize)
+
+
+# Definindo as variáveis de decisão
+x1 = pulp.LpVariable('Metodo1', lowBound=0, cat='Continuous')
+x2 = pulp.LpVariable('Metodo2', lowBound=0, cat='Continuous')
+x3 = pulp.LpVariable('Metodo3', lowBound=0, cat='Continuous')
+
+#Definindo a função Objetivo
+Custo= (8 + 10)*x1 + (7 + 6)*x2 + (11 + 9)*x3
+
+#Add a função-objetivo
+prob += Custo
+
+#Restrição
+ContaminanteA = (12 + 9)*x1 + (25 + 20)*x2 + (17 + 13)*x3
+
+#Add restrição 
+prob += (ContaminanteA>=6000)
+
+
+#Restrição
+ContaminanteB=(35 + 42)*x1 + (18 + 31)*x2 + (56 + 49)*x3
+
+#Add restrição 
+prob += (ContaminanteB>=15000)
+
+#Restrição
+ContaminanteC= (37 + 53)*x1 + (28 + 34)*x2 + (29 + 20)*x3
+
+#Add restrição 
+prob += (ContaminanteC>=12500)
+
+#Restrição
+Fração=x1+x2+x3
+
+#Add restrição 
+prob += (Fração==100)
+
+
+#escrevendo o problema de otimização linear
+print (prob)
+
+# Resolvendo o problema 
+optimization_result = prob.solve()
+
+# Verificando se a solução ótima foi encontrada
+assert optimization_result == pulp.LpStatusOptimal
+
+#mostrando o resultado
+for var in (x1, x2,x3):
+    print('A produção ótima deve ser {}: {:1.0f}'.format(var.name, var.value()))
