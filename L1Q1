@@ -1,0 +1,21 @@
+install pulp
+import pulp
+
+prob = pulp.LpProblem('Ração', LpMinimize)
+
+x1 = pulp.LpVariable('M', lowBound = 0, cat = 'continuous')
+x2 = pulp.LpVariable('FS', lowBound = 0, cat = 'continuous')
+
+custo = x1*0.26 + x2*0.32
+prob += custo
+
+proteina = x1*0.07 + x2*0.21
+prob += (proteina >=0.34)
+
+carboidratos = x1*0.82 + x2*0.79
+prob += (carboidratos >= 2.64)
+
+optimization_result = prob.solve()
+
+print('Milho = ' x1.name, x1.value())
+print('FS = ' x2.name, x2.value())
