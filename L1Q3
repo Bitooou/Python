@@ -1,0 +1,64 @@
+import pulp
+
+#max Lucro=200*x1+300*x2
+#s.a: x1+x2<=45 (área)
+#     3*x1+2*x2<=100 (empregados)
+#     2*x1+4*x2<=120 (fertilizantes)
+# x1= quantidade de milho, x2= quantidade de feijão
+
+
+# Definindo o problema como de maximização
+prob = pulp.LpProblem('Problema Industria SideVR', pulp.LpMinimize)
+
+
+# Definindo as variáveis de decisão
+x1 = pulp.LpVariable('Liga 1', lowBound=0, cat='Continuous')
+x2 = pulp.LpVariable('Liga 2', lowBound=0, cat='Continuous')
+
+
+#Definindo a função Objetivo
+Custo= 190*x1 + 200*x2
+
+#Add a função-objetivo
+prob += Custo
+
+#Restrição
+Carbono=3*x1 + 4*x2
+
+#Add restrição 
+prob += (Carbono<=350)
+prob += (Carbono>=320)
+
+#Restrição
+Silicone=2*x1 + 2.5*x2
+
+#Add restrição 
+prob += (180<=Silicone<=250)
+
+#Restrição
+Niquel= 1*x1 + 1.5*x2
+
+#Add restrição 
+prob += (90<=Niquel<=120)
+
+
+
+#Restrição
+Fração=x1+x2
+
+#Add restrição 
+prob += (Fração==100)
+
+
+#escrevendo o problema de otimização linear
+print (prob)
+
+# Resolvendo o problema 
+optimization_result = prob.solve()
+
+# Verificando se a solução ótima foi encontrada
+assert optimization_result == pulp.LpStatusOptimal
+
+#mostrando o resultado
+for var in (x1, x2):
+    print('A produção ótima deve ser {}: {:1.0f}'.format(var.name, var.value()))
