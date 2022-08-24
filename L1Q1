@@ -1,7 +1,6 @@
-install pulp
 import pulp
 
-prob = pulp.LpProblem('Ração', LpMinimize)
+prob = pulp.LpProblem('Ração', pulp.LpMinimize)
 
 x1 = pulp.LpVariable('M', lowBound = 0, cat = 'continuous')
 x2 = pulp.LpVariable('FS', lowBound = 0, cat = 'continuous')
@@ -17,5 +16,5 @@ prob += (carboidratos >= 2.64)
 
 optimization_result = prob.solve()
 
-print('Milho = ' x1.name, x1.value())
-print('FS = ' x2.name, x2.value())
+print('Milho = ', x1.value())
+print('FS = ', x2.value())
