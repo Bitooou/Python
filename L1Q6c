@@ -1,0 +1,19 @@
+import pulp
+from pulp import LpVariable
+
+prob = pulp.LpProblem('f', pulp.LpMaximize)
+
+x1 = pulp.LpVariable('x1', lowBound = 0, cat = 'Continuous')
+x2 = pulp.LpVariable('x2', lowBound = 0, cat = 'Continuous')
+
+f = x2*3 - x1
+prob += f
+
+r1 = x1 - x2
+prob += (r1 <= 4)
+
+r2 = x1 + 2*x2
+prob += (r2 >= 4)
+
+
+optimization_result = prob.solve()
