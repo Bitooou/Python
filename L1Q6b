@@ -1,0 +1,26 @@
+import pulp
+
+prob = pulp.LpProblem('f', pulp.LpMaximize)
+
+x1 = pulp.LpVariable('x1', lowBound = 0, cat = 'Continuous')
+x2 = pulp.LpVariable('x2', lowBound = 0, cat = 'Continuous')
+
+f = x1*4 + x2*1
+prob += f
+
+r1 = 8*x1+2*x2
+prob += (r1 <= 16)
+
+r2 = 5*x1+2*x2
+prob += (r2 <= 12)
+
+r3 = x1
+prob += (r3>=0)
+
+r4 = x2
+prob += (r4>=0)
+
+optimization_result = prob.solve()
+
+print('x1 = ', x1.value())
+print('x2 = ', x2.value())
