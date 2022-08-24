@@ -1,0 +1,22 @@
+import pulp
+from pulp import LpVariable
+
+prob = pulp.LpProblem('f', pulp.LpMaximize)
+
+x1 = pulp.LpVariable('x1', lowBound = 0, cat = 'Continuous')
+x2 = pulp.LpVariable('x2', lowBound = 0, cat = 'Continuous')
+
+f = 3*x1 + x2
+prob += f
+
+r1 = 2*x1 + x2
+prob += (r1 <= 6)
+
+r2 = x1 + 3*x2
+prob += (r2 <= 9)
+
+
+optimization_result = prob.solve()
+
+print('x1 = ', x1.value())
+print('x2 = ', x2.value())
